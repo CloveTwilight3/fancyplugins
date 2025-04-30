@@ -2,6 +2,8 @@ package de.oliver.fancynpcs.api.skins;
 
 import org.lushplugins.chatcolorhandler.ChatColorHandler;
 
+import java.util.Objects;
+
 public class SkinData {
 
     private String identifier;
@@ -66,6 +68,31 @@ public class SkinData {
 
     public void setTextureSignature(String textureSignature) {
         this.textureSignature = textureSignature;
+    }
+
+    @Override
+    public String toString() {
+        return "SkinData{" +
+                "identifier='" + identifier + '\'' +
+                ", variant=" + variant +
+                ", textureValue='" + textureValue + '\'' +
+                ", textureSignature='" + textureSignature + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SkinData skinData = (SkinData) o;
+        return Objects.equals(identifier, skinData.identifier) &&
+                variant == skinData.variant &&
+                Objects.equals(textureValue, skinData.textureValue) &&
+                Objects.equals(textureSignature, skinData.textureSignature);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, variant, textureValue, textureSignature);
     }
 
     public enum SkinVariant {

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderApiEnv extends PlaceholderExpansion {
+    public static String parsedString = "Grabsky";
+
     public static void registerPlaceholders() {
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
@@ -34,12 +36,20 @@ public class PlaceholderApiEnv extends PlaceholderExpansion {
 
     @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
-        return "Grabsky";
+        if (player == null) {
+            return null;
+        }
+
+        return parsedString;
     }
 
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        return "Grabsky";
+        if (player == null) {
+            return null;
+        }
+
+        return parsedString;
     }
 
 }

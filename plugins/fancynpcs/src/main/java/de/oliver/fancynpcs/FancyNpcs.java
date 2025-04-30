@@ -35,6 +35,8 @@ import de.oliver.fancynpcs.skins.SkinManagerImpl;
 import de.oliver.fancynpcs.skins.SkinUtils;
 import de.oliver.fancynpcs.skins.cache.SkinCacheFile;
 import de.oliver.fancynpcs.skins.cache.SkinCacheMemory;
+import de.oliver.fancynpcs.skins.mineskin.MineSkinQueue;
+import de.oliver.fancynpcs.skins.mojang.MojangQueue;
 import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.fancynpcs.tracker.TurnToPlayerTracker;
 import de.oliver.fancynpcs.tracker.VisibilityTracker;
@@ -209,7 +211,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
         actionManager.registerAction(new NeedPermissionAction());
         actionManager.registerAction(new PlaySoundAction());
 
-        skinManager = new SkinManagerImpl(new SkinCacheFile(), new SkinCacheMemory());
+        skinManager = new SkinManagerImpl(new SkinCacheFile(), new SkinCacheMemory(), MojangQueue.get(), MineSkinQueue.get());
         OldSkinCacheMigrator.migrate();
 
         textConfig = new TextConfig("#E33239", "#AD1D23", "#81E366", "#E3CA66", "#E36666", "");
@@ -321,7 +323,7 @@ public class FancyNpcs extends JavaPlugin implements FancyNpcsPlugin {
             getLogger().warning("Commands and related components have not been registered. This can be changed by setting 'register_commands' to true, and restarting the server.");
         }
 
-        if (ENABLE_DEBUG_MODE_FEATURE_FLAG.isEnabled()) {
+        if (ENABLE_DEBUG_MODE_FEATURE_FLAG.isEnabled() && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             PlaceholderApiEnv.registerPlaceholders();
         }
 

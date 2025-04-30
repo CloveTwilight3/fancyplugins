@@ -1,58 +1,155 @@
 ---
-visibility: hidden
 authors:
-- name: Oliver Schlüter
-  email: oliver@fancyplugins.de
-  link: https://github.com/OliverSchlueter
-  avatar: https://avatars.githubusercontent.com/u/79666085?v=4
+  - name: Oliver Schlüter
+    email: oliver@fancyinnovations.com
+    link: https://github.com/OliverSchlueter
+    avatar: https://avatars.githubusercontent.com/u/79666085?v=4
 
-description: The reasons why we switched to a monorepo for our Minecraft plugins and libraries.
+date: 2025-04-19
+title: 1.21.5 Update (Spring to Life)
+description: Everything you need to know about the 1.21.5 update.
+visibility: hidden
 ---
 
 ![](../static/1_21_5-update.png)
 
-# 1.21.5 Update
-
 In this article, we will talk about the changes in the 1.21.5 update, what that means for our plugins and how we will benefit from the Paper hardfork.
 
-## Changes in 1.21.5 :icon-log:
+## :icon-log: Changes in 1.21.5
 
-### Game changes
+!!!
+Official release notes can be found [here](https://www.minecraft.net/en-us/article/minecraft-java-edition-1-21-5).
+!!!
 
-**New Blocks and Features**
+### New Animal Variants
 
-- Vegetation: Introduction of Firefly Bush, Leaf Litter, Wildflowers, Bush, Short Dry Grass, Tall Dry Grass, and Cactus Flower blocks, enhancing the natural diversity of various biomes. ￼
-- Fallen Trees: New fallen tree generation adds to the realism of forested areas. ￼
-- Ambient Sounds: Desert and Badlands biomes now feature new ambient block sounds, providing a more immersive environment.
+**Pigs, Cows, and Chickens** now have **warm and cold variants**, determined by the biome they spawn in.
 
-**Farm Animals Variants**
+- **Warm Variants**: Found in deserts, jungles, badlands, etc.
+- **Cold Variants**: Found in snowy and End biomes.
+- Chickens lay new **Blue (cold)** and **Brown (warm)** eggs.
+- **Sheep** now spawn with wool color based on the biome's temperature:
+  - **Cold**: Mostly black
+  - **Warm**: Mostly brown
+  - **Temperate**: Mostly white
 
-Pigs, Cows, and Chickens now have warm and cold variants, determined by the biome in which they spawn. For instance, cold variants appear in biomes like Frozen Peaks and Snowy Plains, while warm variants are found in Deserts and Jungles. When bred, offspring randomly inherit one of the parent’s variants, irrespective of the current biome. Additionally, Chickens lay new types of eggs corresponding to their variants: Blue Eggs for cold Chickens and Brown Eggs for warm Chickens.
+### New Wolf Sound Personalities
 
-**Sheep Wool Color** 
+Wolves now randomly get one of **seven unique sound sets**:
+- Classic
+- Big
+- Cute
+- Puglin
+- Angry
+- Grumpy
+- Sad
 
-Sheep wool color now depends on the biome:
-- Temperate biomes: Commonly white; uncommon colors include black, gray, light gray, and brown; rare chance for pink.
-- Cold biomes: Commonly black; uncommon colors are gray, light gray, white, and brown; rare chance for pink.
-- Warm biomes: Commonly brown; uncommon colors are black, white, gray, and light gray; rare chance for pink.
+Each variant has distinct ambient, growl, pant, whine, hurt, and death sounds.
 
-**Spawn Eggs**
+### Spawn Egg Visual Overhaul
 
-Visuals for Spawn Eggs have been overhauled to improve readability and accessibility, with designs reflecting the personality and size of the respective mobs.
+Spawn Eggs now visually reflect the **mob's personality and size**, improving readability and accessibility.
+
+### New World Generation Features
+
+**Fallen Trees**
+- Found in most forested biomes.
+- Come in **oak, birch, jungle**, and **spruce** variants.
+- Sometimes decorated with mushrooms or vines.
+
+**Firefly Bush**
+- Grows near water in Swamps, Badlands, and Mangrove Swamps.
+- Emits light and glowing particles at night.
+- Can be bonemealed to spread.
+
+**Leaf Litter**
+- Found in Forests and Dark Forests.
+- Placed in up to 4 layers per block.
+- Tinted based on biome and usable as fuel or compost.
+
+**Wildflowers**
+- Found in Birch Forests, Meadows.
+- Stackable flowers that can be bonemealed.
+- Craftable into Yellow Dye.
+
+**Bushes**
+- Appear in patches in Windswept, Birch, and River biomes.
+- Collectable with shears or Silk Touch.
+
+**Dry Grass**
+- Short and Tall variants now generate in deserts and badlands.
+- Bonemealable and compostable.
+- Eaten by Sheep.
+
+**Cactus Flowers**
+- Grow on Cactus blocks.
+- Used for Pink Dye or compost.
+- Require open space on all sides.
+
+### Falling Leaf Particles
+
+All **Leaf blocks** now randomly emit gentle falling leaf particles for added ambience.
+
+### New Ambient Sounds
+
+- **Desert and Badlands** blocks like sand and terracotta now emit subtle ambient sounds.
+- Dead Bushes can also trigger audio ambiance when placed on terracotta or sand.
+
+### Visual & Gameplay Tweaks
+
+- **New main menu panorama** for Spring to Life.
+- **Beacon beams** now render up to **2048 blocks high** and are thicker at long distances.
+- **Lodestones** have a new crafting recipe and spawn in Ruined Portals.
+- Updated textures for **Cows, Mooshrooms, and Sheep**.
+
+### Cartographer & Wandering Trader Updates
+
+**Cartographer**
+- Sells 7 new maps pointing to structures in different biomes.
+- Village-specific map offerings and colored banners.
+
+**Wandering Trader**
+- Now buys **basic supplies** like water bottles, hay bales.
+- Offers new trades including **logs, potions**, and **enchanted tools**.
+
+### Mob Spawning & Biomes
+
+- **Camels** now spawn in Deserts.
+- **Cows, Pigs, Chickens, and Sheep** can spawn in **Badlands**.
+- **Woodland Mansions** can generate in the **Pale Garden** biome.
+- **Meadows** have slightly sparser short grass.
+
+###  Technical & Gameplay Improvements
+
+- **Game Tests** are now accessible via datapacks using the `/test` command.
+- **Simulation distance** improvements: tick behavior for crops, snow, and cauldrons extended to all loaded chunks.
+- Various **networking, UI, and tooltip** enhancements.
+- Sound rebalancing and expanded **Iron block sound types**.
+
+### Dev Features & Fixes
+
+- New `--renderDebugLabels` argument for developers.
+- Enhanced **Game Test automation** with new command-line tools.
+- Reverted fix to sprint slowdown mechanics to improve parkour experience.
+- Minor fixes to **items, sounds, and Realms uploads**.
+
+### And yes, as always...
+
+> **Removed Herobrine.**
 
 ### Packet changes
 
-Not much has changed in the packet system.
+Little has changed in the packet system.
 
-Removed packets:
+**Removed packets**
 - `ClientboundAddExperienceOrb`
 
-Added packets:
+**Added packets**
 - `ClientboundTestInstanceBlocksStatus`
 - `ServerboundSetTestBlock`
 - `ServerboundTestInstanceBlockAction`
 
-## Changes in the plugins :icon-megaphone:
+## :icon-megaphone: Changes in the plugins
 
 ### FancyNpcs
 
@@ -60,11 +157,13 @@ FancyNpcs now supports 1.21.5. Update to version [2.5.0](https://modrinth.com/pl
 
 **New Attributes:**
 
-| Npc Type | Attr. Name | Possible Values       |
-|----------|------------|-----------------------|
-| Pig      | variant    | temperate, cold, warm |
-| Cow      | variant    | temperate, cold, warm |
-| Chicken  | variant    | temperate, cold, warm |
+| Npc Type | Attr. Name   | Possible Values       |
+|----------|--------------|-----------------------|
+| Pig      | variant      | temperate, cold, warm |
+| Cow      | variant      | temperate, cold, warm |
+| Chicken  | variant      | temperate, cold, warm |
+| Cat      | collar_color | (all colors)          |
+| Wolf     | collar_color | (all colors)          |
 
 
 ### FancyHolograms
@@ -73,7 +172,7 @@ FancyHolograms now supports 1.21.5. Update to version [2.5.0](https://modrinth.c
 
 There are no other changes in FancyHolograms.
 
-## Paper Hardfork :icon-repo-forked:
+## :icon-repo-forked: Paper Hardfork
 
 You can read about the reasons and changes in this article on the PaperMC forum: [The future of Paper - Hard fork](https://forums.papermc.io/threads/the-future-of-paper-hard-fork.1451/).
 It basically allows the Paper team to work on adding support for new versions after without having to wait on Spigot to update. This means that Paper is able to also update to snapshots, pre-releases and release candidates.
@@ -84,3 +183,5 @@ This is perfect for us, because we can as well update our plugins faster to new 
 ## Conclusion
 
 We are excited about the new changes and the Paper hardfork. We are looking forward to updating our plugins to the new version and snapshots faster than before.
+
+Read the full release notes of the 1.21.5 update [here](https://www.minecraft.net/en-us/article/minecraft-java-edition-1-21-5).

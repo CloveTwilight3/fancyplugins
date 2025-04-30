@@ -63,28 +63,36 @@ public class MineSkinAPI {
                         // TODO use queueResp.getRateLimit().next() instead
                         throw new RatelimitException(System.currentTimeMillis() + 1000 * 10); // retry in next run
                     }
+
                     FancyNpcs.getInstance().getFancyLogger().warn("Could not fetch skin: " + error.code() + ": " + error.message());
-                    FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp.toString());
-                    FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp.toString());
+
+                    if (queueResp != null) FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp);
+                    if (jobResp != null) FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp);
                 }
             } else if (cause instanceof SocketTimeoutException timeoutException) {
                 FancyNpcs.getInstance().getFancyLogger().warn("Timeout while fetching skin: " + timeoutException.getMessage());
-                FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp.toString());
-                FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp.toString());
+
+                if (queueResp != null) FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp);
+                if (jobResp != null) FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp);
+
                 throw new RatelimitException(System.currentTimeMillis() + 1000 * 10); // retry in next run
             } else {
                 FancyNpcs.getInstance().getFancyLogger().error("Error in mineskin request: " + cause.getMessage());
-                FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp.toString());
-                FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp.toString());
+
+                if (queueResp != null) FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp);
+                if (jobResp != null) FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp);
             }
         } catch (InterruptedException e) {
             FancyNpcs.getInstance().getFancyLogger().error("Thread was interrupted while waiting for skin generation.");
-            FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp.toString());
-            FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp.toString());
+
+            if (queueResp != null) FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp);
+            if (jobResp != null) FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp);
+
         } catch (Exception e) {
             FancyNpcs.getInstance().getFancyLogger().error("Unexpected error in skin generation: " + e.getMessage());
-            FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp.toString());
-            FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp.toString());
+
+            if (queueResp != null) FancyNpcs.getInstance().getFancyLogger().debug("QueueResp: " + queueResp);
+            if (jobResp != null) FancyNpcs.getInstance().getFancyLogger().debug("JobResp: " + jobResp);
         }
 
         return null;

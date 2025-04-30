@@ -69,7 +69,7 @@ dependencies {
     implementation(project(":libraries:common"))
     implementation(project(":libraries:jdb"))
     implementation(project(":libraries:plugin-tests"))
-    compileOnly("org.lushplugins:ChatColorHandler:5.1.5")
+    compileOnly("org.lushplugins:ChatColorHandler:5.1.3")
     implementation("de.oliver.FancyAnalytics:api:0.1.6")
     implementation("de.oliver.FancyAnalytics:logger:0.0.6")
     implementation("org.incendo:cloud-core:2.1.0-SNAPSHOT")
@@ -79,7 +79,7 @@ dependencies {
     implementation("org.mineskin:java-client-jsoup:3.0.3-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.1")
+    compileOnly("com.intellectualsites.plotsquared:plotsquared-core:7.5.2")
 }
 
 paper {
@@ -109,11 +109,11 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.5")
 
         downloadPlugins {
-            hangar("ViaVersion", "5.3.0")
-            hangar("ViaBackwards", "5.3.0")
+            hangar("ViaVersion", "5.3.2")
+            hangar("ViaBackwards", "5.3.2")
             hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("multiverse-core", "4.3.11")
         }

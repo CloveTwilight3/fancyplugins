@@ -5,6 +5,7 @@ authors:
   link: https://github.com/OliverSchlueter
   avatar: https://avatars.githubusercontent.com/u/79666085?v=4
 
+date: 2025-03-21
 description: The reasons why we switched to a monorepo for our Minecraft plugins and libraries.
 ---
 

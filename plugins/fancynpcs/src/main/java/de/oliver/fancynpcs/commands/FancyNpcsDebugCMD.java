@@ -54,6 +54,24 @@ public final class FancyNpcsDebugCMD {
         translator.translate("fancynpcs_skin_system_restart_schedulers_success").send(player);
     }
 
+    @Command("fancynpcs skin_system scheduler_status")
+    @Permission("fancynpcs.command.fancynpcs.skin_system.scheduler_status")
+    public void onSkinSchedulerStatus(final Player player) {
+        String mineSkinStatus = MineSkinQueue.get().getScheduler().toString();
+        FancyNpcs.getInstance().getFancyLogger().info("MineSkinAPI Status: " + mineSkinStatus);
+        translator.translate("fancynpcs_skin_system_scheduler_status")
+                .replace("scheduler", "MineSkinAPI")
+                .replace("status", mineSkinStatus)
+                .send(player);
+
+        String mojangStatus = MojangQueue.get().getScheduler().toString();
+        FancyNpcs.getInstance().getFancyLogger().info("MojangAPI Status: " + mojangStatus);
+        translator.translate("fancynpcs_skin_system_scheduler_status")
+                .replace("scheduler", "MojangAPI")
+                .replace("status", mojangStatus)
+                .send(player);
+    }
+
     @Command("fancynpcs skin_system clear_queues")
     @Permission("fancynpcs.command.fancynpcs.skin_system.clear_queues")
     public void onClearSkinQueues(final Player player) {

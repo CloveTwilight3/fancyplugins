@@ -240,4 +240,16 @@ public class Expectable<T> {
 
         throw new AssertionError("toHaveLength can only be used on Strings");
     }
+
+    public <E extends Throwable> E toThrow(Class<E> expected) {
+        try {
+            ((Runnable) t).run();
+        } catch (Throwable e) {
+            if (expected.isInstance(e)) {
+                return (E) e;
+            }
+            throw new AssertionError("Expected " + expected.getSimpleName() + " but got " + e.getClass().getSimpleName());
+        }
+        throw new AssertionError("Expected " + expected.getSimpleName() + " but got nothing");
+    }
 }

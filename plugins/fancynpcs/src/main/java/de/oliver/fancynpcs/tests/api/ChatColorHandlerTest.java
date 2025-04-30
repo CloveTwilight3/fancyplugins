@@ -1,5 +1,6 @@
 package de.oliver.fancynpcs.tests.api;
 
+import de.oliver.fancynpcs.tests.PlaceholderApiEnv;
 import de.oliver.plugintests.annotations.FPTest;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,9 +18,9 @@ public class ChatColorHandlerTest {
             return;
         }
 
-        String input = "Player name: %player_name%";
+        String input = "Player name: %fn-test%";
         String got = ChatColorHandler.translate(input, player, ParserTypes.placeholder());
-        String expected = "Player name: " + player.getName();
+        String expected = "Player name: " + PlaceholderApiEnv.parsedString;
 
         expect(got).toEqual(expected);
     }

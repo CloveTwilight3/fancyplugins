@@ -6,11 +6,10 @@ import de.oliver.fancynpcs.FancyNpcs;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.skins.SkinData;
 import de.oliver.fancynpcs.api.skins.SkinGeneratedEvent;
+import de.oliver.fancynpcs.api.skins.SkinLoadException;
 import de.oliver.fancynpcs.api.skins.SkinManager;
 import de.oliver.fancynpcs.skins.cache.SkinCache;
 import de.oliver.fancynpcs.skins.cache.SkinCacheData;
-import de.oliver.fancynpcs.skins.mineskin.MineSkinQueue;
-import de.oliver.fancynpcs.skins.mojang.MojangQueue;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.lushplugins.chatcolorhandler.ChatColorHandler;
@@ -36,10 +35,14 @@ public class SkinManagerImpl implements SkinManager, Listener {
 
     private final SkinCache fileCache;
     private final SkinCache memCache;
+    private final SkinGenerationQueue mojangQueue;
+    private final SkinGenerationQueue mineSkinQueue;
 
-    public SkinManagerImpl(SkinCache fileCache, SkinCache memCache) {
+    public SkinManagerImpl(SkinCache fileCache, SkinCache memCache, SkinGenerationQueue mojangQueue, SkinGenerationQueue mineSkinQueue) {
         this.fileCache = fileCache;
         this.memCache = memCache;
+        this.mojangQueue = mojangQueue;
+        this.mineSkinQueue = mineSkinQueue;
 
         File skinsDir = new File(SKINS_DIRECTORY);
         if (!skinsDir.exists()) {
@@ -48,7 +51,7 @@ public class SkinManagerImpl implements SkinManager, Listener {
     }
 
     @Override
-    public SkinData getByIdentifier(String identifier, SkinData.SkinVariant variant) {
+    public SkinData getByIdentifier(String identifier, SkinData.SkinVariant variant) throws SkinLoadException {
         if (SkinUtils.isUUID(identifier)) {
             return getByUUID(UUID.fromString(identifier), variant);
         }
@@ -64,20 +67,14 @@ public class SkinManagerImpl implements SkinManager, Listener {
         if (SkinUtils.isPlaceholder(identifier)) {
             String parsed = ChatColorHandler.translate(identifier);
 
-            if (SkinUtils.isPlaceholder(parsed)) {
-                return null;
+            if (parsed.isBlank() || parsed.equalsIgnoreCase("null") || SkinUtils.isPlaceholder(parsed)) {
+                throw new SkinLoadException(SkinLoadException.Reason.INVALID_PLACEHOLDER, "(RAW = '" + identifier + "'; PARSED = '" + parsed + "')");
             }
 
             return getByIdentifier(parsed, variant);
         }
 
-        // is username
-        UUID uuid = UUIDFetcher.getUUID(identifier);
-        if (uuid == null) {
-            return null;
-        }
-
-        return getByUUID(uuid, variant);
+        return getByUsername(identifier, variant);
     }
 
     @Override
@@ -87,26 +84,32 @@ public class SkinManagerImpl implements SkinManager, Listener {
             return cached;
         }
 
-        MojangQueue.get().add(new MojangQueue.SkinRequest(uuid.toString(), variant));
+        mojangQueue.add(new SkinGenerationRequest(uuid.toString(), variant));
 
 //        GenerateRequest genReq = GenerateRequest.user(uuid);
 //        genReq.variant(Variant.valueOf(variant.name()));
-//        MineSkinQueue.get().add(new MineSkinQueue.SkinRequest(uuid.toString(), genReq));
+//        mineSkinQueue.add(new MineSkinQueue.SkinRequest(uuid.toString(), genReq));
         return new SkinData(uuid.toString(), variant);
     }
 
     @Override
-    public SkinData getByUsername(String username, SkinData.SkinVariant variant) {
-        UUID uuid = UUIDFetcher.getUUID(username);
-        if (uuid == null) {
-            return null;
+    public SkinData getByUsername(String username, SkinData.SkinVariant variant) throws SkinLoadException {
+        SkinData cached = tryToGetFromCache(username, variant);
+        if (cached != null) {
+            return cached;
         }
 
-        return getByUUID(uuid, variant);
+        UUID uuid = UUIDFetcher.getUUID(username);
+        if (uuid == null) {
+            throw new SkinLoadException(SkinLoadException.Reason.INVALID_USERNAME, "(USERNAME = '" + username + "')");
+        }
+        SkinData dataByUUID = getByUUID(uuid, variant);
+
+        return new SkinData(username, dataByUUID.getVariant(), dataByUUID.getTextureValue(), dataByUUID.getTextureSignature());
     }
 
     @Override
-    public SkinData getByURL(String url, SkinData.SkinVariant variant) {
+    public SkinData getByURL(String url, SkinData.SkinVariant variant) throws SkinLoadException {
         SkinData cached = tryToGetFromCache(url, variant);
         if (cached != null) {
             return cached;
@@ -115,17 +118,16 @@ public class SkinManagerImpl implements SkinManager, Listener {
         GenerateRequest genReq;
         try {
             genReq = GenerateRequest.url(url);
-        } catch (MalformedURLException e) {
-            FancyNpcs.getInstance().getFancyLogger().error("Invalid URL: " + url);
-            return null;
+        } catch (final IllegalArgumentException | MalformedURLException e) {
+            throw new SkinLoadException(SkinLoadException.Reason.INVALID_URL, "(URL = '" + url + "')");
         }
         genReq.variant(Variant.valueOf(variant.name()));
-        MineSkinQueue.get().add(new MineSkinQueue.SkinRequest(url, genReq));
+        mineSkinQueue.add(new SkinGenerationRequest(url, variant, genReq));
         return new SkinData(url, variant);
     }
 
     @Override
-    public SkinData getByFile(String filePath, SkinData.SkinVariant variant) {
+    public SkinData getByFile(String filePath, SkinData.SkinVariant variant) throws SkinLoadException {
         SkinData cached = tryToGetFromCache(filePath, variant);
         if (cached != null) {
             return cached;
@@ -133,13 +135,12 @@ public class SkinManagerImpl implements SkinManager, Listener {
 
         File file = new File(SKINS_DIRECTORY + filePath);
         if (!file.exists()) {
-            FancyNpcs.getInstance().getFancyLogger().error("File does not exist: " + filePath);
-            return null;
+            throw new SkinLoadException(SkinLoadException.Reason.INVALID_FILE, "(FILE = '" + filePath + "')");
         }
 
         GenerateRequest genReq = GenerateRequest.upload(file);
         genReq.variant(Variant.valueOf(variant.name()));
-        MineSkinQueue.get().add(new MineSkinQueue.SkinRequest(filePath, genReq));
+        mineSkinQueue.add(new SkinGenerationRequest(filePath, variant, genReq));
         return new SkinData(filePath, variant);
     }
 

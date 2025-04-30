@@ -71,8 +71,8 @@ dependencies {
     implementation("de.oliver.FancyAnalytics:api:0.1.6")
     implementation("de.oliver.FancyAnalytics:logger:0.0.6")
 
-    compileOnly("de.oliver:FancyNpcs:2.4.2")
-    compileOnly("org.lushplugins:ChatColorHandler:5.1.5")
+    compileOnly("de.oliver:FancyNpcs:2.4.4")
+    compileOnly("org.lushplugins:ChatColorHandler:5.1.3")
     compileOnly("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 }
 
@@ -109,12 +109,12 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.5")
 
         downloadPlugins {
-            modrinth("fancynpcs", "2.4.0")
-            hangar("ViaVersion", "5.3.1")
-            hangar("ViaBackwards", "5.3.1")
+            modrinth("fancynpcs", "2.4.4")
+            hangar("ViaVersion", "5.3.2")
+            hangar("ViaBackwards", "5.3.2")
 //            modrinth("multiverse-core", "4.3.11")
             hangar("PlaceholderAPI", "2.11.6")
 //            modrinth("DecentHolograms", "2.8.12")
